@@ -14,11 +14,10 @@ namespace GadgetAlternativeApps
         [STAThread]
         static void Main()
         {
-            GadgetManager.Init();
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            GadgetManager.Init();
             initNotifyIcon();
 
             Application.Run();

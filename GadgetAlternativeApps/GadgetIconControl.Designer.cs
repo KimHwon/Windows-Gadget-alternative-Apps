@@ -37,6 +37,7 @@
             // 
             this.iconPictureBox.BackColor = System.Drawing.Color.Transparent;
             this.iconPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.iconPictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.iconPictureBox.Location = new System.Drawing.Point(4, 4);
             this.iconPictureBox.Name = "iconPictureBox";
             this.iconPictureBox.Size = new System.Drawing.Size(143, 143);
@@ -48,6 +49,7 @@
             // 
             this.nameLabel.AutoSize = true;
             this.nameLabel.BackColor = System.Drawing.Color.Transparent;
+            this.nameLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.nameLabel.Font = new System.Drawing.Font("맑은 고딕", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.nameLabel.Location = new System.Drawing.Point(5, 150);
             this.nameLabel.MaximumSize = new System.Drawing.Size(143, 50);
@@ -56,7 +58,7 @@
             this.nameLabel.Size = new System.Drawing.Size(143, 50);
             this.nameLabel.TabIndex = 1;
             this.nameLabel.Text = "asdf";
-            this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.nameLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.nameLabel.DoubleClick += new System.EventHandler(this.nameLabel_DoubleClick);
             // 
             // GadgetIconControl

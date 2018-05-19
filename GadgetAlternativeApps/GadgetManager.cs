@@ -27,10 +27,11 @@ namespace GadgetAlternativeApps
                 foreach (var data in dataList)
                 {
                     string[] spData = data.Split('=');
-                    addGadget(spData[0], bool.Parse(spData[1]), int.Parse(spData[2]), int.Parse(spData[3]));
+                    addGadget(spData[0]);
+
+                    setGadgetPositionAt(_gadgetInfoList.Count - 1, int.Parse(spData[2]), int.Parse(spData[3]));
+                    setGadgetActivationAt(_gadgetInfoList.Count - 1, bool.Parse(spData[1]));
                 }
-                
-                updateGadgets();
             }
             catch { }
         }
@@ -54,7 +55,7 @@ namespace GadgetAlternativeApps
             catch { }
         }
 
-        public static bool addGadget(string dirPath, bool isActive = false, int posX = 0, int posY = 0)
+        public static bool addGadget(string dirPath)
         {
             XmlDocument menifestXml;
             GadgetInfo gadgetInfo = new GadgetInfo();
@@ -69,7 +70,12 @@ namespace GadgetAlternativeApps
 
                 gadgetInfo.name = gadgetNode.SelectSingleNode("name").InnerText;
                 gadgetInfo.version = gadgetNode.SelectSingleNode("version").InnerText;
-                gadgetInfo.htmlPath = gadgetNode.SelectSingleNode("base").Attributes.GetNamedItem("src").Value;
+                string absolutePath = gadgetNode.SelectSingleNode("base").Attributes.GetNamedItem("src").Value;
+                if (!Path.IsPathRooted(absolutePath))
+                {
+                    absolutePath = Path.Combine(dirPath, absolutePath);
+                }
+                gadgetInfo.htmlPath = absolutePath;
 
                 try
                 {
@@ -164,9 +170,9 @@ namespace GadgetAlternativeApps
                 }
                 catch { }
 
-                gadgetInfo.isActived = isActive;
-                gadgetInfo.X = posX;
-                gadgetInfo.Y = posY;
+                gadgetInfo.isActived = false;
+                gadgetInfo.X = 0;
+                gadgetInfo.Y = 0;
 
                 _gadgetInfoList.Add(gadgetInfo);
             }
@@ -197,34 +203,29 @@ namespace GadgetAlternativeApps
 
         public static void setGadgetActivationAt(int index, bool isActive)
         {
-            GadgetInfo info = _gadgetInfoList[index];
-            info.isActived = isActive;
-            _gadgetInfoList[index] = info;
+            GadgetInfo gInfo = _gadgetInfoList[index];
+            gInfo.isActived = isActive;
+            _gadgetInfoList[index] = gInfo;
+
+            if (isActive && !_gadgetFormList.ContainsKey(index))
+            {
+                // Create
+                _gadgetFormList.Add(index, new GadgetForm(index, gInfo.X, gInfo.Y));
+                _gadgetFormList[index].Show();
+            }
+            else if (!isActive && _gadgetFormList.ContainsKey(index))
+            {
+                // Delete
+                _gadgetFormList[index].Close();
+                _gadgetFormList.Remove(index);
+            }
         }
         public static void setGadgetPositionAt(int index, int posX, int posY)
         {
-            GadgetInfo info = _gadgetInfoList[index];
-            info.X = posX;
-            info.Y = posY;
-            _gadgetInfoList[index] = info;
-        }
-
-        public static void updateGadgets()
-        {
-            int i = 0;
-            foreach (var gInfo in _gadgetInfoList)
-            {
-                if (_gadgetFormList.ContainsKey(i) && !gInfo.isActived)
-                {
-                    _gadgetFormList[i].Close();
-                    _gadgetFormList.Remove(i);
-                }
-                else if (!_gadgetFormList.ContainsKey(i) && gInfo.isActived)
-                {
-                    _gadgetFormList.Add(i, new GadgetForm(i, gInfo.X, gInfo.Y));
-                    _gadgetFormList[i].Show();
-                }
-            }
+            GadgetInfo gInfo = _gadgetInfoList[index];
+            gInfo.X = posX;
+            gInfo.Y = posY;
+            _gadgetInfoList[index] = gInfo;
         }
     }
 }

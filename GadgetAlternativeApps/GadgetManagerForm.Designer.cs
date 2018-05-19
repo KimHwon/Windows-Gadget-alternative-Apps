@@ -46,6 +46,7 @@
             // 
             // gadgetListPanel
             // 
+            this.gadgetListPanel.BackColor = System.Drawing.SystemColors.Control;
             this.gadgetListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.gadgetListPanel.Location = new System.Drawing.Point(13, 45);
             this.gadgetListPanel.Name = "gadgetListPanel";

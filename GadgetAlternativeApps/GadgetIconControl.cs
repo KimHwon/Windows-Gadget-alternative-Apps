@@ -24,6 +24,8 @@ namespace GadgetAlternativeApps
 
             iconPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             iconPictureBox.ImageLocation = gadgetImageSrc;
+
+            this.BackColor = Color.FromArgb(100, Color.White);
         }
 
         private void iconPictureBox_DoubleClick(object sender, EventArgs e)
@@ -39,7 +41,6 @@ namespace GadgetAlternativeApps
         private void activeGadget()
         {
             GadgetManager.setGadgetActivationAt(_index, true);
-            GadgetManager.updateGadgets();
         }
     }
 }

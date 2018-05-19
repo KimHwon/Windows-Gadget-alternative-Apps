@@ -18,7 +18,7 @@ namespace GadgetAlternativeApps
         {
             InitializeComponent();
 
-            Location = new Point(posX, posY);
+            this.Location = new Point(posX, posY);
             _index = index;
         }
         ~GadgetForm()
@@ -29,6 +29,31 @@ namespace GadgetAlternativeApps
         private void GadgetForm_LocationChanged(object sender, EventArgs e)
         {
             GadgetManager.setGadgetPositionAt(_index, Location.X, Location.Y);
+        }
+
+        private void GadgetForm_Load(object sender, EventArgs e)
+        {
+            gadgetDisplay.Navigate(GadgetManager.getGadgetInfoAt(_index).htmlPath);
+        }
+
+        private void gadgetDisplay_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            if (isHorizontalScroll)
+            {
+                gadgetDisplay.Size = new Size(gadgetDisplay.Document.Body.ScrollRectangle.Width, gadgetDisplay.Document.Body.ScrollRectangle.Height);
+                ActiveForm.Size = new Size(gadgetDisplay.Document.Body.ScrollRectangle.Width, gadgetDisplay.Document.Body.ScrollRectangle.Height);
+            }
+        }
+
+        private bool isHorizontalScroll
+        {
+            get
+            {
+                var widthofScrollableArea = gadgetDisplay.Document.Body.ScrollRectangle.Width;
+                var widthofControl = gadgetDisplay.Document.Window.Size.Width;
+
+                return widthofScrollableArea > widthofControl;
+            }
         }
     }
 }
